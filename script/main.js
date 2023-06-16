@@ -47,7 +47,7 @@ form.addEventListener('submit', (e) => {
 
   const array = markTime('getRandomArray', getRandomArrayWasm, lengthValue);
   const [ resultWasm, resultJs ] = executeOperation(selectValue, array);
-
+  console.log(resultJs, resultWasm)
   if (!selectValue.includes('sort')) {
     resultTitle.textContent = `Результ: ${resultWasm}, ${resultJs}`;
   }
