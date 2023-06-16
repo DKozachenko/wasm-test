@@ -1,4 +1,7 @@
-import { add, test, memory } from "../build/release/release.js";
+import { getPrimeDump as getPrimeDumpWasm, 
+  getPrimeSmart as getPrimeSmartWasm, 
+  getRandomArray as getRandomArrayWasm, 
+  sortArray as sortArrayWasm } from "../build/release/release.js";
 import { getRandomArray, markTime } from './utils.js';
 import { getPrimeDump, getPrimeSmart } from './prime.js';
 import { sortArray } from './sort.js';
@@ -15,19 +18,20 @@ const resultTitle = document.querySelector('.result');
  * @return {number | number[]} первое простое число или отсортированный массив
  */
 function executeOperation(operationKey, testArray) {
+  let resultWasm, resultJs;
   switch (operationKey) {
-    case 'prime-number-dump-wasm':
-      break;
-    case 'prime-number-dump-js':
-      return getPrimeDump(testArray);
-    case 'prime-number-smart-wasm':
-      break;
-    case 'prime-number-smart-js':
-      return getPrimeSmart(testArray);
-    case 'sort-wasm':
-      break;
-    case 'sort-js':
-      return sortArray(testArray);
+    case 'prime-number-dump':
+      resultWasm = markTime('getPrimeDumpWasm', getPrimeDumpWasm, testArray);
+      resultJs = markTime('getPrimeDump', getPrimeDump, testArray);
+      return [resultWasm, resultJs];
+    case 'prime-number-smart':
+      resultWasm = markTime('getPrimeSmartWasm', getPrimeSmartWasm, testArray);
+      resultJs = markTime('getPrimeSmart', getPrimeSmart, testArray);
+      return [resultWasm, resultJs];
+    case 'sort':
+      resultWasm = markTime('sortArrayWasm', sortArrayWasm, testArray);
+      resultJs = markTime('sortArray', sortArray, testArray);
+      return [resultWasm, resultJs];
     default:
       console.log('Неизвестный тип операции');
   }
@@ -41,11 +45,11 @@ form.addEventListener('submit', (e) => {
   const lengthValue = +lengthInput.value;
   console.log(selectValue, lengthValue)
 
-  const array = markTime('getRandomArray', getRandomArray, lengthValue);
-  const result = markTime('opexecuteOperation', executeOperation, selectValue, array);
+  const array = markTime('getRandomArray', getRandomArrayWasm, lengthValue);
+  const [ resultWasm, resultJs ] = executeOperation(selectValue, array);
 
   if (!selectValue.includes('sort')) {
-    resultTitle.textContent = `Результ: ${result}`;
+    resultTitle.textContent = `Результ: ${resultWasm}, ${resultJs}`;
   }
   if (!selectValue.includes('prime')) {
     resultTitle.textContent = `Массив отсортирован`;

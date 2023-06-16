@@ -1,4 +1,9 @@
 {
+  "entries": [
+    "./assembly/sort.ts",
+    "./assembly/utils.ts",
+    "./assembly/prime.ts"
+  ],
   "targets": {
     "debug": {
       "outFile": "build/debug/debug.wasm",
