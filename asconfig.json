@@ -10,8 +10,7 @@
       "outFile": "build/release/release.wasm",
       "textFile": "build/release/release.wat",
       "sourceMap": true,
-      "optimizeLevel": 3,
-      "shrinkLevel": 0,
+      "optimize": true,
       "converge": false,
       "noAssert": false
     }
