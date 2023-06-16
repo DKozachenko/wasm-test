@@ -6,6 +6,7 @@ import { sortArray } from './sort.js';
 const operationSelect = document.querySelector('#operation');
 const lengthInput = document.querySelector('#length');
 const form = document.querySelector('.form');
+const resultTitle = document.querySelector('.result');
 
 /**
  * Выполнить операцию
@@ -43,6 +44,12 @@ form.addEventListener('submit', (e) => {
   const array = markTime('getRandomArray', getRandomArray, lengthValue);
   const result = markTime('opexecuteOperation', executeOperation, selectValue, array);
 
+  if (!selectValue.includes('sort')) {
+    resultTitle.textContent = `Результ: ${result}`;
+  }
+  if (!selectValue.includes('prime')) {
+    resultTitle.textContent = `Массив отсортирован`;
+  }
   // console.log(result);
 
 });
